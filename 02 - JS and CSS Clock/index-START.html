@@ -77,14 +77,19 @@
   <script>
     const seconHand = document.querySelector('.second-hand');
 
-    const secsDegs = 0;
+    let secsDegs = 0;
     function setDate() {
       const now = new Date();
       const seconds = now.getSeconds();
-      
-      const secondsDegrees = seconds != 0 ? ((seconds / 60) * 360) + 90 : 450;
-      
-      seconHand.style.transform = `rotate(${secondsDegrees}deg)`;
+
+
+      // const secondsDegrees = (((seconds / 60) * 360) + 90);    // Da el grado fijo para cada segundo pero en el cero se reinicia la posición y se brinca fisicamente
+      // seconHand.style.transform = `rotate(${secsDegs}deg)`;
+
+      secsDegs += 6; // Acumular grados para que no se brinque físicamente el segundero al reiniciar la vuelta
+      seconHand.style.transform = `rotate(${secsDegs}deg)`;
+
+      console.log(seconds);
 
       const minutesHand = document.querySelector('.min-hand');
       const minutes = now.getMinutes();
