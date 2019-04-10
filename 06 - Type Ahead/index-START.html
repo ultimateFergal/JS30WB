@@ -21,9 +21,50 @@ const cities = [];
 
 // fetch returns a promise
 const prom = fetch(endpoint);
-console.log(prom);
+console.log(prom, 'prom');
 
-fetch(endpoint).then(blob => console.log(blob));
+
+// Devuelve la info del blob en la promesa
+fetch(endpoint).then(blob => console.log(blob, 'blob'));
+
+// Devuelve los datos necesitados en la promesa
+fetch(endpoint)
+  .then(blob => blob.json())
+    .then(data => {
+      console.log(data, 'data');
+      cities.push(...data);
+      console.log(cities, 'cities');
+      });
+
+function findMatches(wordToMatch, cities) {
+  return cities.filter(place => {
+    // Here we need to figure out if the city or state matches what was searched
+    // Armo la expresión regular a partir de la palabra a buscar wordToMatch
+    const regex = new RegExp(wordToMatch, 'gi'); //global, looks for the entire string and insensitive, capital and non capital letters
+    return place.city.match(regex) || place.state.match(regex);
+  })
+}
+
+function displayMatches(){
+  // console.log(this.value);
+  const matchArray = findMatches(this.value, cities);
+  // console.log(matchArray);
+  const html = matchArray.map(place => {
+    `<li>
+    <span class="name">${place.city}, ${place.state}</span>
+    <span class="population">${place.population}</span>
+    </li>`;
+  }).join(''); // It will return an arrary and i need one string
+suggestions.innerHTML = html;
+
+}
+
+const searchInput = document.querySelector('.search');
+const suggestions = document.querySelector('.suggestions');
+
+searchInput.addEventListener('change', displayMatches);
+searchInput.addEventListener('keyup', displayMatches);
+
 </script>
   </body>
 </html>
