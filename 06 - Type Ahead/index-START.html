@@ -21,7 +21,7 @@ const cities = [];
 
 // fetch returns a promise
 const prom = fetch(endpoint);
-console.log(prom, 'prom');
+// console.log(prom, 'prom');
 
 
 // Devuelve la info del blob en la promesa
@@ -31,9 +31,9 @@ fetch(endpoint).then(blob => console.log(blob, 'blob'));
 fetch(endpoint)
   .then(blob => blob.json())
     .then(data => {
-      console.log(data, 'data');
+      // console.log(data, 'data');
       cities.push(...data);
-      console.log(cities, 'cities');
+      // console.log(cities, 'cities');
       });
 
 function findMatches(wordToMatch, cities) {
@@ -50,12 +50,12 @@ function displayMatches(){
   const matchArray = findMatches(this.value, cities);
   // console.log(matchArray);
   const html = matchArray.map(place => {
-    `<li>
+    return `<li>
     <span class="name">${place.city}, ${place.state}</span>
     <span class="population">${place.population}</span>
     </li>`;
   }).join(''); // It will return an arrary and i need one string
-suggestions.innerHTML = html;
+  suggestions.innerHTML = html;
 
 }
 
