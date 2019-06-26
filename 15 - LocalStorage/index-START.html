@@ -28,7 +28,53 @@
 <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
-  const items = [];
+  const items = JSON.parse(localStorage.getItem('items')) || [];
+
+  function addItem(e) {
+    e.preventDefault();
+    // this is the form
+    const text = (this.querySelector('[name=item]')).value;
+    const item = {
+      text,//ES6 // text: 'Item Name',
+      done: false
+    }
+    items.push(item);
+    localStorage.setItem('items', JSON.stringify(items));
+    populateList(items, itemsList);
+    this.reset();
+
+  }
+
+  function populateList(plates = [], platesList) {
+    platesList.innerHTML = plates.map((plate, i) => {
+      return `
+        <li>
+          <input type="checkbox" data-index=${i} id="items${i}" ${plate.done ? 'checked' : ''}/>
+          <label for="items${i}">${plate.text}</label>
+        </li>
+      `;
+    }).join('');// Obtiene el array y lo convierte en un string
+  }
+
+  function toggleDone(e) {
+    // console.log(e); // twice
+    if (!e.target.matches('input')) return; // skip this unless it's an input
+    // console.log(e.target);
+    const el = e.target;
+    // console.log(el.dataset.index); // index of the corresponding item in the checkboxes
+    const index = el.dataset.index;
+    items[index].done = !items[index].done;
+    localStorage.setItem('items', JSON.stringify(items));
+    populateList(items, itemsList);
+  }
+  addItems.addEventListener('submit', addItem);
+  itemsList.addEventListener('click', toggleDone)
+
+  populateList(items, itemsList);
+  const checkBoxes = document.querySelectorAll('input');
+
+  checkBoxes.forEach(input => input.addEventListener('click', () => alert('hi')));
+ 
 
 </script>
 
