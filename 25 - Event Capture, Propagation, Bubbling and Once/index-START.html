@@ -42,6 +42,27 @@
 
 <button></button>
 <script>
+  const divs = document.querySelectorAll('div');
+  const button = document.querySelector('button');
+
+  function logText(e) {
+    console.log(this);
+    console.log(this.classList.value);
+    e.stopPropagation(); // stop bubbling,  will only show one every time, no longer trigger events on the parents on the way up
+  }
+
+  // document.body.addEventListener('click', logText);
+
+  divs.forEach(div => div.addEventListener('click', logText, {
+    capture: false, // true : will run the function on the way down rather on the way up
+    once: true, // will listen for a click once and then unbind itself, it will ner run again, same as   div.removeEventListener('click', logText);
+  }));
+
+  button.addEventListener('click', () => {
+    console.log('Click!!!');
+  }, {
+    // once: true //the event will only work once
+  })
 
 </script>
 </body>
